@@ -8,7 +8,7 @@ While it is designed to make creating CNC G-Code as easy as possible, GCoderCNC 
 
 Best of all, this app doesn't upload your designs or data to a server, or use cookies, so you can keep all your work on your own computer. And even better, it's designed for use on all PCs, web-browsers and tablets that support HTML5 apps (although not for phones).
 
-![An example screenshot](./screenshots/generalwindow.png)
+![An example screenshot](screenshots/generalwindow.png)
 
 ## Privacy
 
