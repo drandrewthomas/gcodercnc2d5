@@ -2,7 +2,7 @@
 
 ## What is GCoderCNC 2.5D
 
-GCoderCNC 2.5D is a completely free and open source web app for creating G-Code files from SVG graphics, such as the ones you can create using Inkscape. Once you load an SVG file you can choose between router and LASER modes to suit your CNC machine and project type. And it's hosted on Github too, so you can run it **[just by clicking here!](https://drandrewthomas.github.io/gcodercnc2d5)**
+GCoderCNC 2.5D is a completely free and open source web app for creating G-Code files from SVG graphics, such as the ones you can create using Inkscape. Once you load an SVG file you can choose between router and LASER modes to suit your CNC machine and project type. And it's hosted on Github too, so you can run it **[just by clicking here!](https://drandrewthomas.github.io/gcodercnc2d5){:target="_blank"}**
 
 While it is designed to make creating CNC G-Code as easy as possible, GCoderCNC 2.5D includes many advanced features to ensure you can use it for some very creative projects. For instance, it allows you to do things like setting different depths of cut, or LASER powers, for individual elements. And for routing it even lets you vary the cut depth for simple v-carving!
 
