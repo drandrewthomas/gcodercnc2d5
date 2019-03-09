@@ -573,6 +573,7 @@ function generategcode()
   cutterheight=h;
   safez=sz;
   downloadcncfile();
+  savesettingslocally();
   $('#savegcodefiledialog').modal('hide');
 }
 
@@ -738,7 +739,7 @@ function refreshwebapp()
 
 function onUnloading(e)
 {
-  savesettingslocally();
+  //savesettingslocally();
 }
 
 function savesettingslocally()
