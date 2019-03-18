@@ -426,10 +426,17 @@ function overridechanged()
     getdefaults();
     selectsettings.showControl("Override feed rate (mm/min)");
     selectsettings.showControl("Override spindle speed (%)");
-    selectsettings.showControl("Override depth (mm)");
     selectsettings.showControl("Override passes (nr)");
-    if(cncmode===0) selectsettings.showControl("Override bottom profile");
-    else selectsettings.hideControl("Override bottom profile");
+    if(cncmode===0)
+    {
+      selectsettings.showControl("Override bottom profile");
+      selectsettings.showControl("Override depth (mm)");
+    }
+    else
+    {
+      selectsettings.hideControl("Override bottom profile");
+      selectsettings.hideControl("Override depth (mm)");
+    }
     selectsettings.showControl("Override group");
     selectsettings.showControl("Apply override values");
     selectsettings.setValue("Override depth (mm)",defaultcut);
@@ -437,7 +444,7 @@ function overridechanged()
     selectsettings.setValue("Override feed rate (mm/min)",defaultfeed);
     selectsettings.setValue("Override spindle speed (%)",defaultspeed);
     selectsettings.setValue("Override bottom profile",defaultbottomprofile);
-    selectsettings.setValue("Override group",0);
+    selectsettings.setValue("Override group",defaultgroup);
     selectsettings.show();
   }
 }
