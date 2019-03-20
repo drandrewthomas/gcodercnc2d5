@@ -79,13 +79,12 @@ function createsettings()
   selectsettings.addButton("Reverse path direction",reverseselectedpath);
   selectsettings.addBoolean("Include in cutting list",true,cutlistchanged);
   selectsettings.addBoolean("Override defaults",false,overridechanged);
-  selectsettings.addRange("Override feed rate (mm/min)",10,500,10);
-  selectsettings.addRange("Override spindle speed (%)",0,100,5);
-  selectsettings.addNumber("Override depth (mm)",0.2,50,1,0.1);
-  selectsettings.addNumber("Override passes (nr)",1,100,1,1);
-  selectsettings.addDropDown("Override bottom profile",bottomprofilelist);
+  selectsettings.addRange("Override feed rate (mm/min)",10,500,10,overridevalueschanged);
+  selectsettings.addRange("Override spindle speed (%)",0,100,5,overridevalueschanged);
+  selectsettings.addNumber("Override depth (mm)",0.2,50,1,0.1,overridevalueschanged);
+  selectsettings.addNumber("Override passes (nr)",1,100,1,1,overridevalueschanged);
+  selectsettings.addDropDown("Override bottom profile",bottomprofilelist,overridevalueschanged);
   selectsettings.addDropDown("Override group",["First","Second","Third","Fourth","Last"]);
-  selectsettings.addButton("Apply override values",updateoverrides);
   selectsettings.setWidth(250);
   selectsettings.hide();
 }
@@ -235,9 +234,14 @@ function drawtocanvas(can)
         y=pts[d][1]*sc;
         if(d===0)
         {
-          if(commands[c][6]===1) ctx.strokeStyle='rgb(0,0,0)';
-          else ctx.strokeStyle='rgb(255,0,0)';
           ctx.lineWidth=1;
+          if(commands[c][6]!==1) ctx.strokeStyle='rgb(255,0,0)';
+          else if(commands[c][8]===0) ctx.strokeStyle='rgb(0,0,0)';
+          else
+          {
+            ctx.strokeStyle='rgb(10,72,201)';
+            ctx.lineWidth=2;
+          }
           ctx.beginPath();
           ctx.moveTo(x+5,y+5);
         }
@@ -383,10 +387,17 @@ function toggleselectedui()
       selectsettings.setValue("Override group",commands[selhand][7]);
       selectsettings.showControl("Override feed rate (mm/min)");
       selectsettings.showControl("Override spindle speed (%)");
-      selectsettings.showControl("Override depth (mm)");
       selectsettings.showControl("Override passes (nr)");
-      if(cncmode===0) selectsettings.showControl("Override bottom profile");
-      else selectsettings.hideControl("Override bottom profile");
+      if(cncmode===0)
+      {
+        selectsettings.showControl("Override bottom profile");
+        selectsettings.showControl("Override depth (mm)");
+      }
+      else
+      {
+        selectsettings.hideControl("Override bottom profile");
+        selectsettings.hideControl("Override depth (mm)");
+      }
       selectsettings.showControl("Override group");
       selectsettings.showControl("Apply override values");
     }
@@ -399,8 +410,19 @@ function cutlistchanged()
   var inc;
   if(selhand===-1 || stopchangedevents===true) return;
   inc=selectsettings.getValue("Include in cutting list");
-  if(inc===false) commands[selhand][6]=0;
-  else commands[selhand][6]=1;
+  if(inc===false)
+  {
+    commands[selhand][6]=0;
+    commands[selhand][8]=0;
+    selectsettings.setValue("Override defaults",false);
+    selectsettings.hideControl("Override defaults");
+
+  }
+  else
+  {
+    commands[selhand][6]=1;
+    selectsettings.showControl("Override defaults");
+  }
   drawtocanvas("svgcanvas");
 }
 
@@ -424,6 +446,12 @@ function overridechanged()
   {
     commands[selhand][8]=1;
     getdefaults();
+    commands[selhand][2]=defaultcut;
+    commands[selhand][3]=defaultpasses;
+    commands[selhand][4]=defaultfeed;
+    commands[selhand][5]=defaultspeed;
+    commands[selhand][9]=defaultbottomprofile;
+    commands[selhand][7]=defaultgroup;
     selectsettings.showControl("Override feed rate (mm/min)");
     selectsettings.showControl("Override spindle speed (%)");
     selectsettings.showControl("Override passes (nr)");
@@ -460,31 +488,6 @@ function reverseselectedpath()
   }
   commands[selhand][1]=npts;
   drawtocanvas("svgcanvas");
-}
-
-function updateoverrides()
-{
-  var ovr=selectsettings.getValue("Override defaults");
-  if(ovr===false)
-  {
-    commands[selhand][2]=-1;
-    commands[selhand][3]=-1;
-    commands[selhand][4]=-1;
-    commands[selhand][5]=-1;
-    commands[selhand][7]=-1;
-    commands[selhand][8]=0;
-    commands[selhand][9]=-1;
-  }
-  else
-  {
-    commands[selhand][2]=selectsettings.getValue("Override depth (mm)");
-    commands[selhand][3]=selectsettings.getValue("Override passes (nr)");
-    commands[selhand][4]=selectsettings.getValue("Override feed rate (mm/min)");
-    commands[selhand][5]=selectsettings.getValue("Override spindle speed (%)");
-    commands[selhand][7]=selectsettings.getValue("Override group").index;
-    commands[selhand][8]=1;
-    commands[selhand][9]=selectsettings.getValue("Override bottom profile").index;
-  }
 }
 
 function layoutapp()
@@ -524,6 +527,7 @@ function setcncmode(m)
             defaultsettings.showControl("Default depth (mm)");
             selectsettings.showControl("Override depth (mm)");
             defaultsettings.showControl("Default bottom profile");
+            selectsettings.showControl("Override bottom profile");
             document.getElementById("rmode").text="✓ Router mode (with depth)"
             document.getElementById("lmode").text="LASER mode (no depth)"
             break;
@@ -532,6 +536,7 @@ function setcncmode(m)
             defaultsettings.hideControl("Default depth (mm)");
             selectsettings.hideControl("Override depth (mm)");
             defaultsettings.hideControl("Default bottom profile");
+            selectsettings.hideControl("Override bottom profile");
             document.getElementById("rmode").text="Router mode (with depth)"
             document.getElementById("lmode").text="✓ LASER mode (no depth)"
             break;
@@ -737,6 +742,24 @@ function openthissample()
 {
   $('#samplesdialog').modal('hide');
   loadsample(tempsample);
+}
+
+function overridevalueschanged()
+{
+  commands[selhand][3]=selectsettings.getValue("Override passes (nr)");
+  commands[selhand][4]=selectsettings.getValue("Override feed rate (mm/min)");
+  commands[selhand][5]=selectsettings.getValue("Override spindle speed (%)");
+  commands[selhand][7]=selectsettings.getValue("Override group").index;
+  if(cncmode===0) // Router mode
+  {
+    commands[selhand][2]=selectsettings.getValue("Override depth (mm)");
+    commands[selhand][9]=selectsettings.getValue("Override bottom profile").index;
+  }
+  else // LASER mode
+  {
+    commands[selhand][2]=defaultcut;
+    commands[selhand][9]=defaultbottomprofile;
+  }
 }
 
 function refreshwebapp()
