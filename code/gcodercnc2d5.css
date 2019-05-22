@@ -1,22 +1,36 @@
-html,body
+body
 {
   border: none;
   margin: none;
   padding: none;
-  background-color: #fef2d0;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+#preload
+{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1px;
+  height: 1px;
+  display: none;
+  visibility: hidden;
 }
 
 #outercontainer
 {
   position: absolute;
-  height: 100%;
   width: 100%;
-  min-width: 650px;
-  min-height: 550px;
+  height: 100%;
+  min-width: 900px;
+  min-height: 600px;
   border: none;
   margin: none;
   padding: none;
-  background-color: #fef2d0;
+  overflow: hidden;
 }
 
 #appcontainer
@@ -40,69 +54,14 @@ html,body
   box-shadow: 5px 5px 5px rgba(0,0,0,0.3);
 }
 
-.samplescontainer
-{
-  height: 100%;
-  width: 100%;
-  margin: none;
-  padding: none;
-  background: #fff7e1 !important;
-}
-
-.sampleslist
-{
-  height: 480px;
-  width: 260px;
-  margin: none;
-  padding: none;
-  overflow-x: hidden;
-  overflow-y: scroll;
-  text-align: center !important;
-  background: #fff7e1 !important;
-}
-
-.sampleslistitem
-{
-  width: 250px !important;
-  margin: none;
-  padding: none;
-  overflow: hidden;
-  text-align: center !important;
-  background: #fff7e1 !important;
-}
-
 .samplesdescription
 {
-  width: 420px;
-  height: 480px;
   margin: none;
-  padding: 5px;;
-  overflow-x: hidden;
-  overflow-y: scroll;
-  background: #fff7e1 !important;
-}
-
-.samplesimage
-{
-  width: 200px;
-  height: 150px;
-  margin: none;
-  padding: none;
-  text-align: center !important;
-}
-
-.sampledescheading
-{
-  background-color: #fff7e1;
-  color: #111133;
-  font-size: 1.3em;
-  font-weight: bold;
-  text-align: left !important;
+  padding: 5px;
 }
 
 .sampledesctext
 {
-  background-color: #fff7e1;
   color: #111133;
   font-size: 1.1em;
   text-align: left !important;
@@ -127,6 +86,8 @@ html,body
 
 .cncmodalbody
 {
+  max-height: calc(100vh * 0.7) !important;
+  overflow-y: auto;
   background-color: #fff7e1;
   color: #111133;
   font-size: 1.3em;
@@ -161,19 +122,29 @@ html,body
 
 .navbarbrand
 {
-  color: #ffff00 !important;
+  color: #ffff00;
   font-size: 1.5em !important;
 }
 
 .navbaritems
 {
-  color: #ffffff !important;
+  color: #ffffff;
   font-size: 1em !important;
+}
+
+.navbardropdownmenu
+{
+  color: #ffffff;
 }
 
 .navbardropdownitems
 {
   font-size: 1em !important;
+}
+
+.navbardropdownitems:hover
+{
+  background-color: rgba(0,0,0,0) !important;
 }
 
 .svgimportcontrol
