@@ -14,28 +14,30 @@
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-  <script src="./code/gcodercnc2d5_v_1_0.min.js"></script>
+  <script src="./libraries/FileSaver.min.js"></script>
   <script src="./libraries/quicksettings.min.js"></script>
+  <script src="./code/cncvariables2d5_v_1_1.js"></script>
+  <script src="./code/gcodercnc2d5_v_1_1.min.js"></script>
   <link rel="stylesheet" type="text/css" href="./code/gcodercnc2d5.css">
 </head>
-<body onLoad="init()">
+<body>
 <div id="outercontainer">
 
-<nav class="navbar navbar-expand navbar-expand-sm navbar-light navbar-fixed-top cncnavbar">
+<nav id="appnav" class="navbar navbar-expand navbar-expand-sm navbar-light navbar-fixed-top cncnavbar">
   <!-- Brand -->
   <a class="navbar-brand navbarbrand" href="#"><img src="./images/icons/navbaricon.png" width="32" height="32" class="d-inline-block align-top" /> GCoderCNC 2.5D</a>
   <ul class="navbar-nav">
     <!-- Dropdown -->
     <li class="nav-item dropdown">
       <a class="nav-link dropdown-toggle navbaritems" href="#" id="navbardrop" data-toggle="dropdown">Import</a>
-      <div class="dropdown-menu">
+      <div class="dropdown-menu navbardropdownmenu">
         <a class="dropdown-item navbardropdownitems" href="#" data-toggle="modal" onClick="openimportdialog()">Import SVG...</a>
       </div>
     </li>
     <!-- Dropdown -->
     <li class="nav-item dropdown">
       <a class="nav-link dropdown-toggle navbaritems" href="#" id="navbardrop" data-toggle="dropdown">Export</a>
-      <div class="dropdown-menu">
+      <div class="dropdown-menu navbardropdownmenu">
         <a class="dropdown-item navbardropdownitems" href="#" data-toggle="modal" onClick="opengcodedialog()">Export G-Code...</a>
         <a class="dropdown-item navbardropdownitems" href="#" data-toggle="modal" onClick="opensvgexportdialog()">Export SVG file...</a>
       </div>
@@ -43,7 +45,7 @@
     <!-- Dropdown -->
     <li class="nav-item dropdown">
       <a class="nav-link dropdown-toggle navbaritems" href="#" id="navbardrop" data-toggle="dropdown">CNC mode</a>
-      <div class="dropdown-menu">
+      <div class="dropdown-menu navbardropdownmenu">
         <a id="rmode" class="dropdown-item navbardropdownitems" href="#" onClick="setcncmode(0)">✓ Router mode (with depth)</a>
         <a id="lmode" class="dropdown-item navbardropdownitems" href="#" onClick="setcncmode(1)">LASER mode (no depth)</a>
       </div>
@@ -51,7 +53,7 @@
     <!-- Dropdown -->
     <li class="nav-item dropdown">
       <a class="nav-link dropdown-toggle navbaritems" href="#" id="navbardrop" data-toggle="dropdown">XY origin</a>
-      <div class="dropdown-menu">
+      <div class="dropdown-menu navbardropdownmenu">
         <a id="origin0" class="dropdown-item navbardropdownitems" href="#" onClick="setcncorigin(0)">✓ Bottom left</a>
         <a id="origin1" class="dropdown-item navbardropdownitems" href="#" onClick="setcncorigin(1)">Top left</a>
         <a id="origin2" class="dropdown-item navbardropdownitems" href="#" onClick="setcncorigin(2)">Bottom right</a>
@@ -61,10 +63,16 @@
     </li>
     <!-- Dropdown -->
     <li class="nav-item dropdown">
+      <a class="nav-link dropdown-toggle navbaritems" href="#" id="navbardrop" data-toggle="dropdown">Theme</a>
+      <div class="dropdown-menu navbardropdownmenu">
+        <div id="themesdropdownitems"></div>
+      </div>
+    </li>
+    <!-- Dropdown -->
+    <li class="nav-item dropdown">
       <a class="nav-link dropdown-toggle navbaritems" href="#" id="navbardrop" data-toggle="dropdown">Examples</a>
-      <div class="dropdown-menu">
-        <a class="dropdown-item navbardropdownitems" href="#" data-toggle="modal" onClick="opensamplesdialog()">Open an example SVG file...</a>
-        <a id="projectlink" class="dropdown-item navbardropdownitems" href="" target="_blank">Visit this examples web page</a>
+      <div class="dropdown-menu navbardropdownmenu">
+        <div id="samplesdropdownitems"></div>
       </div>
     </li>
   </ul>
@@ -72,7 +80,8 @@
     <!-- Dropdown -->
     <li class="nav-item dropdown">
       <a class="nav-link dropdown-toggle navbaritems" href="#" id="navbardrop" data-toggle="dropdown">Help</a>
-      <div class="dropdown-menu dropdown-menu-right">
+      <div class="dropdown-menu dropdown-menu-right navbardropdownmenu">
+        <a id="projectlink" class="dropdown-item navbardropdownitems" href="" target="_blank">Visit this examples web page</a>
         <a class="dropdown-item navbardropdownitems" href="#" data-toggle="modal" data-target="#aboutdialog">About...</a>
         <a class="dropdown-item navbardropdownitems" href="#" data-toggle="modal" data-target="#privacydialog">Privacy...</a>
         <a class="dropdown-item navbardropdownitems" href="#" data-toggle="modal" data-target="#refreshdialog">Refresh this app...</a>
@@ -243,20 +252,11 @@
   <div class="modal-dialog modal-lg modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header cncmodalheader">
-        <h4 class="modal-title">Example SVG files for you to try</h4>
+        <h4 class="modal-title"><div id="samplename"></div></h4>
         <button type="button" class="close cncmodalcross" data-dismiss="modal">&times;</button>
       </div>
-      <div class="modal-body cncmodalbody" style="height: 500px; max-height: 500px !important;">
-        <div id="samplescontainer" class="container samplesocntainer">
-          <div class="row">
-            <div class="col-sm">
-              <div id="sampleslist" class ="sampleslist"></div>
-            </div>
-            <div class="col-sm lefttext">
-              <div id="samplesdescription" class ="samplesdescription lefttext"></div>
-            </div>
-          </div>
-        </div>
+      <div id="samplesbody" class="modal-body cncmodalbody" style="height: 500px; max-height: 500px !important;">
+        <div id="samplesdescription" class ="samplesdescription lefttext"></div>
       </div>
       <div class="modal-footer cncmodalfooter">
         <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
@@ -289,6 +289,13 @@
   <canvas id="svgcanvas" width="1" height="1"></canvas>
 </div>
 
+</div>
+  
+<div id="preload">
+  <img src="./images/th_darthvaderhead.png" width="0" height="0"/>
+  <img src="./images/th_dollshousecrate.png" width="0" height="0"/>
+  <img src="./images/th_happyface.png" width="0" height="0"/>
+  <img src="./images/th_humptyegg.png" width="0" height="0"/>
 </div>
 
 </body>
