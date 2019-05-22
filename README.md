@@ -22,8 +22,18 @@ However, please note that, as described in the license file, you use this softwa
 
 ## Credits and sources
 
-QuickSettings is used for the properties dialogs: [https://github.com/bit101/quicksettings](https://github.com/bit101/quicksettings).
+The sources below have been very useful in developing this web app: many thanks to them all :-)
 
-To help ensure downloading files is simple and consistent, and works regardless of browser download size limits, Filesaver.js is used: [https://github.com/eligrey/FileSaver.js/](https://github.com/eligrey/FileSaver.js/).
+QuickSettings is used for the properties dialogs: [https://github.com/bit101/quicksettings](https://github.com/bit101/quicksettings)
+
+To help ensure downloading files is simple and consistent, and works regardless of browser download size limits, Filesaver.js is used: [https://github.com/eligrey/FileSaver.js/](https://github.com/eligrey/FileSaver.js/)
+
+To help web coding go smoothly, JQuery is used: [http://jquery.com/](http://jquery.com/)
+
+For stylish web app development, Bootstrap 4 is used: [https://getbootstrap.com/](https://getbootstrap.com/)
+
+The function drawpatharc includes code for calculating the arc centre from [https://github.com/canvg/canvg/blob/master/src/canvg.js](https://github.com/canvg/canvg/blob/master/src/canvg.js)
+
+The getQueryVariable function, allowing reading query variables in the page URL, came from [https://css-tricks.com/snippets/javascript/get-url-variables](https://css-tricks.com/snippets/javascript/get-url-variables)
 
 Finally, this web app has been published by Andrew Thomas and [cncmakerzone.co.uk](https://www.cncmakerzone.co.uk). Please enjoy it :-)
