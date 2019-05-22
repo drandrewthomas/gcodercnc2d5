@@ -1,5 +1,7 @@
 # GCoderCNC 2.5D
 
+GCoderCNC 2.5D has been updaded to version 1.1: [see more details in the changelog](https://github.com/drandrewthomas/gcodercnc2d5/blob/master/changelog.md).
+
 ## What is GCoderCNC 2.5D
 
 GCoderCNC 2.5D is a completely free and open source web app for creating G-Code files from SVG graphics, such as the ones you can create using [Inkscape](https://inkscape.org/). Once you load an SVG file you can choose between router and LASER modes to suit your CNC machine and project type. It's hosted on Github too, so you can run it **[just by clicking here](https://drandrewthomas.github.io/gcodercnc2d5)** without having to visit any dodgy websites!
@@ -20,6 +22,8 @@ However, please note that, as described in the license file, you use this softwa
 
 ## Credits and sources
 
-This web app uses the excellent QuickSettings library for the properties dialogs. Please go visit the project at [https://github.com/bit101/quicksettings](https://github.com/bit101/quicksettings).
+QuickSettings is used for the properties dialogs: [https://github.com/bit101/quicksettings](https://github.com/bit101/quicksettings).
+
+To help ensure downloading files is simple and consistent, and works regardless of browser download size limits, Filesaver.js is used: [https://github.com/eligrey/FileSaver.js/](https://github.com/eligrey/FileSaver.js/).
 
 Finally, this web app has been published by Andrew Thomas and [cncmakerzone.co.uk](https://www.cncmakerzone.co.uk). Please enjoy it :-)
