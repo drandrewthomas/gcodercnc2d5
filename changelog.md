@@ -1,5 +1,12 @@
 # Changelog
 
+## Version 1.2 (18 Jun 2019)
+
+* Changed to new properties dialogs that allow better styling and application of themes (QuickSettings.js is now removed).
+* All event handler attachment in index.html has been moved to the javascript load function.
+* The refresh app item in the help menu has been removed: it isn't needed now that updates have version numbers in file extensions.
+* Various other bug fixes and improvements.
+
 ## Version 1.1 (22 May 2019)
 
 * Added Filesaver.js for larger and more consistent downloading/saving.
