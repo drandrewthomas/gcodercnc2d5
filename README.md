@@ -1,6 +1,6 @@
 # GCoderCNC 2.5D
 
-GCoderCNC 2.5D has been updaded to version 1.1: [see more details in the changelog](https://github.com/drandrewthomas/gcodercnc2d5/blob/master/changelog.md).
+GCoderCNC 2.5D has been updaded to version 1.2: [see more details in the changelog](https://github.com/drandrewthomas/gcodercnc2d5/blob/master/changelog.md).
 
 ## What is GCoderCNC 2.5D
 
@@ -24,7 +24,7 @@ However, please note that, as described in the license file, you use this softwa
 
 The sources below have been very useful in developing this web app: many thanks to them all :-)
 
-QuickSettings is used for the properties dialogs: [https://github.com/bit101/quicksettings](https://github.com/bit101/quicksettings)
+QuickSettings was used for the properties dialogs prior to v1.2: [https://github.com/bit101/quicksettings](https://github.com/bit101/quicksettings)
 
 To help ensure downloading files is simple and consistent, and works regardless of browser download size limits, Filesaver.js is used: [https://github.com/eligrey/FileSaver.js/](https://github.com/eligrey/FileSaver.js/)
 
