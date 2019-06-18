@@ -15,9 +15,10 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
   <script src="./libraries/FileSaver.min.js"></script>
-  <script src="./libraries/quicksettings.min.js"></script>
-  <script src="./code/cncvariables2d5_v_1_1.js"></script>
-  <script src="./code/gcodercnc2d5_v_1_1.min.js"></script>
+  <script src="./code/cncvariables2d5_v_1_2.js"></script>
+  <script src="./code/cncsvgparser2d5_v_1_2.js"></script>
+  <script src="./code/cncgcode2d5_v_1_2.js"></script>
+  <script src="./code/gcodercnc2d5_v_1_2.js"></script>
   <link rel="stylesheet" type="text/css" href="./code/gcodercnc2d5.css">
 </head>
 <body>
@@ -31,34 +32,34 @@
     <li class="nav-item dropdown">
       <a class="nav-link dropdown-toggle navbaritems" href="#" id="navbardrop" data-toggle="dropdown">Import</a>
       <div class="dropdown-menu navbardropdownmenu">
-        <a class="dropdown-item navbardropdownitems" href="#" data-toggle="modal" onClick="openimportdialog()">Import SVG...</a>
+        <a id="openimportdialog" class="dropdown-item navbardropdownitems" href="#" data-toggle="modal">Import SVG...</a>
       </div>
     </li>
     <!-- Dropdown -->
     <li class="nav-item dropdown">
       <a class="nav-link dropdown-toggle navbaritems" href="#" id="navbardrop" data-toggle="dropdown">Export</a>
       <div class="dropdown-menu navbardropdownmenu">
-        <a class="dropdown-item navbardropdownitems" href="#" data-toggle="modal" onClick="opengcodedialog()">Export G-Code...</a>
-        <a class="dropdown-item navbardropdownitems" href="#" data-toggle="modal" onClick="opensvgexportdialog()">Export SVG file...</a>
+        <a id="opengcodedialog" class="dropdown-item navbardropdownitems" href="#" data-toggle="modal">Export G-Code...</a>
+        <a id="opensvgexportdialog" class="dropdown-item navbardropdownitems" href="#" data-toggle="modal">Export SVG file...</a>
       </div>
     </li>
     <!-- Dropdown -->
     <li class="nav-item dropdown">
       <a class="nav-link dropdown-toggle navbaritems" href="#" id="navbardrop" data-toggle="dropdown">CNC mode</a>
       <div class="dropdown-menu navbardropdownmenu">
-        <a id="rmode" class="dropdown-item navbardropdownitems" href="#" onClick="setcncmode(0)">✓ Router mode (with depth)</a>
-        <a id="lmode" class="dropdown-item navbardropdownitems" href="#" onClick="setcncmode(1)">LASER mode (no depth)</a>
+        <a id="rmode" class="dropdown-item navbardropdownitems" href="#">✓ Router mode (with depth)</a>
+        <a id="lmode" class="dropdown-item navbardropdownitems" href="#">LASER mode (no depth)</a>
       </div>
     </li>
     <!-- Dropdown -->
     <li class="nav-item dropdown">
       <a class="nav-link dropdown-toggle navbaritems" href="#" id="navbardrop" data-toggle="dropdown">XY origin</a>
       <div class="dropdown-menu navbardropdownmenu">
-        <a id="origin0" class="dropdown-item navbardropdownitems" href="#" onClick="setcncorigin(0)">✓ Bottom left</a>
-        <a id="origin1" class="dropdown-item navbardropdownitems" href="#" onClick="setcncorigin(1)">Top left</a>
-        <a id="origin2" class="dropdown-item navbardropdownitems" href="#" onClick="setcncorigin(2)">Bottom right</a>
-        <a id="origin3" class="dropdown-item navbardropdownitems" href="#" onClick="setcncorigin(3)">Top right</a>
-        <a id="origin4" class="dropdown-item navbardropdownitems" href="#" onClick="setcncorigin(4)">Middle</a>
+        <a id="origin0" class="dropdown-item navbardropdownitems" href="#">✓ Bottom left</a>
+        <a id="origin1" class="dropdown-item navbardropdownitems" href="#">Top left</a>
+        <a id="origin2" class="dropdown-item navbardropdownitems" href="#">Bottom right</a>
+        <a id="origin3" class="dropdown-item navbardropdownitems" href="#">Top right</a>
+        <a id="origin4" class="dropdown-item navbardropdownitems" href="#">Middle</a>
       </div>
     </li>
     <!-- Dropdown -->
@@ -84,7 +85,6 @@
         <a id="projectlink" class="dropdown-item navbardropdownitems" href="" target="_blank">Visit this examples web page</a>
         <a class="dropdown-item navbardropdownitems" href="#" data-toggle="modal" data-target="#aboutdialog">About...</a>
         <a class="dropdown-item navbardropdownitems" href="#" data-toggle="modal" data-target="#privacydialog">Privacy...</a>
-        <a class="dropdown-item navbardropdownitems" href="#" data-toggle="modal" data-target="#refreshdialog">Refresh this app...</a>
         <a class="dropdown-item navbardropdownitems" href="https://github.com/drandrewthomas/GCoderCNC_2.5D" target="_blank">Visit the Github page</a>
         <a class="dropdown-item navbardropdownitems" href="https://www.cncmakerzone.co.uk" target="_blank">Visit CNCMakerZone.co.uk</a>
       </div>
@@ -102,11 +102,11 @@
       </div>
       <div class="modal-body cncmodalbody">
         <p>Click the 'choose file' button below to import your design, making sure the file is a valid Scalable Vector Graphics (SVG) file.</p>
-        <input id="svgfile" class="form-control-file border svgimportcontrol" name="svgfile" type="file" onchange="svgfilechanged()" />
+        <input id="svgfile" class="form-control-file border svgimportcontrol" name="svgfile" type="file" />
       </div>
       <div class="modal-footer cncmodalfooter">
         <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-        <button id="importbutton" type="button" class="btn btn-danger" data-dismiss="modal" onClick="dofileselected()">Open file</button>
+        <button id="importbutton" type="button" class="btn btn-danger" data-dismiss="modal">Open file</button>
       </div>
     </div>
   </div>
@@ -131,6 +131,25 @@
   </div>
 </div>
 
+<!-- Text element found dialog -->
+<div id="svgtexteldialog" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header cncmodalheader">
+        <h4 class="modal-title">Warning: text element found!</h4>
+        <button type="button" class="close cncmodalcross" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body cncmodalbody">
+        <p>Your file includes SVG text elements, which won't be rendered as they do not contain any path data.</p>
+        <p>If you want your text included in your CNC project please convert it to paths in your SVG editing software and try again.</p>
+      </div>
+      <div class="modal-footer cncmodalfooter">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- GCode file save dialog -->
 <div id="savegcodefiledialog" class="modal fade" role="dialog">
   <div class="modal-dialog modal-dialog-centered" style="width: 800px;">
@@ -146,7 +165,7 @@
         </div>
         <div class="row" style="width: 90%; margin: auto;">
           <div class="col text-center">
-            Width (mm): <input id="ncwidth" type="number" name="quantity" min="0" max="2000" step="0.1" oninput="dialogwidthchanged('ncwidth','ncheight')">
+            Width (mm): <input id="ncwidth" type="number" name="quantity" min="0" max="2000" step="0.1">
           </div>
           <div class="col text-center">
             GRBL version:
@@ -159,7 +178,7 @@
         <br />
         <div class="row" style="width: 90%; margin: auto;">
           <div class="col text-center">
-            Height (mm): <input id="ncheight" type="number" name="quantity" min="0" max="2000" step="0.1" oninput="dialogheightchanged('ncwidth','ncheight')">
+            Height (mm): <input id="ncheight" type="number" name="quantity" min="0" max="2000" step="0.1">
           </div>
           <div class="col text-center">
             <div id="safezdiv">
@@ -171,7 +190,7 @@
       </div>
       <div class="modal-footer cncmodalfooter">
         <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-danger" onClick="generategcode()">Download the G-Code</button>
+        <button id="generategcode" type="button" class="btn btn-danger">Download the G-Code</button>
       </div>
     </div>
   </div>
@@ -192,16 +211,16 @@
         </div>
         <div class="row" style="width: 90%; margin: auto;">
           <div class="col text-center">
-            Width (mm): <input id="svgncwidth" type="number" name="quantity" min="0" max="2000" step="0.1" oninput="dialogwidthchanged('svgncwidth','svgncheight')">
+            Width (mm): <input id="svgncwidth" type="number" name="quantity" min="0" max="2000" step="0.1">
           </div>
           <div class="col text-center">
-            Height (mm): <input id="svgncheight" type="number" name="quantity" min="0" max="2000" step="0.1" oninput="dialogheightchanged('svgncwidth','svgncheight')">
+            Height (mm): <input id="svgncheight" type="number" name="quantity" min="0" max="2000" step="0.1">
           </div>
         </div>
       </div>
       <div class="modal-footer cncmodalfooter">
         <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-danger" onClick="generatesvgexport()">Download the SVG file</button>
+        <button id="generatesvgexport" type="button" class="btn btn-danger">Download the SVG file</button>
       </div>
     </div>
   </div>
@@ -260,34 +279,134 @@
       </div>
       <div class="modal-footer cncmodalfooter">
         <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-danger" onClick="openthissample()">Open this example</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Refresh WebAPp dialog -->
-<div id="refreshdialog" class="modal fade" role="dialog">
-  <div class="modal-dialog modal-lg modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header cncmodalheader">
-        <h4 class="modal-title">Refreshing this Web App</h4>
-        <button type="button" class="close cncmodalcross" data-dismiss="modal">&times;</button>
-      </div>
-      <div class="modal-body cncmodalbody">
-        <p>If you are having difficulties with this Web App, or believe it is out of date, you can choose to refresh it. That will cause all of the application files to be re-downloaded from the internet so may take a little while. Once done you should have the latest version to enjoy :-)</p>
-      </div>
-      <div class="modal-footer cncmodalfooter">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-danger" onClick="refreshwebapp()">Refresh now</button>
+        <button id="openthissample" type="button" class="btn btn-danger">Open this example</button>
       </div>
     </div>
   </div>
 </div>
 
 <div id="appcontainer">
+
   <canvas id="svgcanvas" width="1" height="1"></canvas>
-</div>
+  
+  <div id="defaultprefsbox">
+  <ul class="preferencesbox">
+    <li class="preferenceheading">Default settings</li>
+    <div class="prefrow"><li class="preference">
+      Default feed rate (<div id="deffeedval" class="preferencesinlinevalue">100</div> mm/min):
+      &nbsp;
+      <input id="deffeed" type="range" value="100" min="10" max="500" step="10">
+    </li></div>
+    <div class="prefrow"><li class="preference">
+      Default spindle speed (<div id="defspeedval" class="preferencesinlinevalue">100</div>%):
+      &nbsp;
+      <input id="defspeed" type="range" value="100" min="0" max="100" step="5">
+    </li></div>
+    <div id="defdepthbox" class="prefrow"><li class="preference">
+      Default depth (mm):
+      &nbsp;
+      <input id="defdepth" id="" type="number" value="1" min="0.2" max="50" step="0.1">
+    </li></div>
+    <div class="prefrow"><li class="preference">
+      Default passes (nr):
+      &nbsp;
+      <input id="defpasses" type="number" value="1" min="1" max="100" step="1">
+    </li></div>
+    <div id="defprofilebox" class="prefrow"><li class="preference">
+      Default bottom profile:
+      &nbsp;
+      <select id="defprofile">
+        <option selected>Flat all along</option>
+        <option>Straight down-up</option>
+        <option>Straight up-down</option>
+        <option>Sine down-up</option>
+        <option>Sine up-down</option>
+        <option>Straight just down</option>
+        <option>Straight just up</option>
+        <option>Sine just down</option>
+        <option>Sine just up</option>
+        <option>Trapezoid 80% flat</option>
+      </select>
+    </li></div>
+    <div class="prefrow"><li class="preference">
+      Default group:
+      &nbsp;
+      <select id="defgroup">
+        <option selected>First</option>
+        <option>Second</option>
+        <option>Third</option>
+        <option>Fourth</option>
+        <option>Last</option>
+      </select>
+    </li></div>
+  </ul>
+  </div>
+  
+  <div id="editselectionbox">
+  <ul class="preferencesbox">
+    <li class="preferenceheading">Edit selection</li>
+      <div class="prefrow"><li class="preference">
+        <button id="reversebutton" type="button" class="prefbutton">Reverse path</button>
+      </li></div>
+      <div class="prefrow"><li class="preference">
+        <input type="checkbox" id="cutcheck" class="prefcheck" checked>
+        <label for="cutcheck" class="preflabel">Include in cutting list</label>
+      </li></div>
+      <div id="overbox" class="prefrow"><li class="preference">
+        <input type="checkbox" id="overcheck" class="prefcheck">
+        <label for="overcheck" class="preflabel">Override defaults</label>
+      </li></div>
+      <div id="overridesbox">
+        <div class="prefrow"><li class="preference">
+          Override feed rate (<div id="overfeedval" class="preferencesinlinevalue">100</div> mm/min):
+          &nbsp;
+          <input id="overfeed" type="range" value="100" min="10" max="500" step="10">
+        </li></div>
+        <div class="prefrow"><li class="preference">
+          Override spindle speed (<div id="overspeedval" class="preferencesinlinevalue">100</div>%):
+          &nbsp;
+          <input id="overspeed" type="range" value="100" min="0" max="100" step="5">
+        </li></div>
+        <div id="overdepthbox" class="prefrow"><li class="preference">
+          Override depth (mm):
+          &nbsp;
+          <input id="overdepth" id="" type="number" value="1" min="0.2" max="50" step="0.1">
+        </li></div>
+        <div class="prefrow"><li class="preference">
+          Override passes (nr):
+          &nbsp;
+          <input id="overpasses" type="number" value="1" min="1" max="100" step="1">
+        </li></div>
+        <div id="overprofilebox" class="prefrow"><li class="preference">
+          Override bottom profile:
+          &nbsp;
+          <select id="overprofile">
+            <option selected>Flat all along</option>
+            <option>Straight down-up</option>
+            <option>Straight up-down</option>
+            <option>Sine down-up</option>
+            <option>Sine up-down</option>
+            <option>Straight just down</option>
+            <option>Straight just up</option>
+            <option>Sine just down</option>
+            <option>Sine just up</option>
+            <option>Trapezoid 80% flat</option>
+          </select>
+        </li></div>
+        <div class="prefrow"><li class="preference">
+          Override group:
+          &nbsp;
+          <select id="overgroup">
+            <option selected>First</option>
+            <option>Second</option>
+            <option>Third</option>
+            <option>Fourth</option>
+            <option>Last</option>
+          </select>
+        </li></div>
+      </div>
+
+    </div>
 
 </div>
   
