@@ -5,6 +5,7 @@
 * Changed to new properties dialogs that allow better styling and application of themes (QuickSettings.js is now removed).
 * All event handler attachment in index.html has been moved to the javascript load function.
 * The refresh app item in the help menu has been removed: it isn't needed now that updates have version numbers in file extensions.
+* When importing an SVG file with text elements a warning now pops up to tell the user that text must be converted to paths before importing.
 * Various other bug fixes and improvements.
 
 ## Version 1.1 (22 May 2019)
