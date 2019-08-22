@@ -1,5 +1,13 @@
 # Changelog
 
+## Version 1.3 (22 Aug 2019)
+
+* When exporting an SVG file paths are now closed using a 'Z' tag if they were closed in the original file import.
+* Added a new example SVG file (dragon plaque) in the examples menu.
+* Fixed issues with properties dialog boxes and selections when changing to a new file/example.
+* Local storage functions have been separated out into a new storage script, with new versions for Chrome storage, to allow creation of a Chromebook app version.
+* Various minor improvements and bug fixes.
+
 ## Version 1.2 (18 Jun 2019)
 
 * Changed to new properties dialogs that allow better styling and application of themes (QuickSettings.js is now removed).
