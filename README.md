@@ -1,6 +1,6 @@
 # GCoderCNC 2.5D
 
-GCoderCNC 2.5D has been updaded to version 1.2: [see more details in the changelog](https://github.com/drandrewthomas/gcodercnc2d5/blob/master/changelog.md).
+GCoderCNC has been updaded to version 1.3: [see more details in the changelog](https://github.com/drandrewthomas/gcodercnc2d5/blob/master/changelog.md).
 
 ## What is GCoderCNC 2.5D
 
