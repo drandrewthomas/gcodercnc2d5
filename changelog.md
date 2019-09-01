@@ -1,5 +1,10 @@
 # Changelog
 
+## Version 1.4 (1 Sep 2019)
+
+* More minor adjustments to facilitate the Chromebook app.
+* Fixed bug with selecting paths on loaded/imported files.
+
 ## Version 1.3 (22 Aug 2019)
 
 * When exporting an SVG file paths are now closed using a 'Z' tag if they were closed in the original file import.
