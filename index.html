@@ -10,17 +10,17 @@
   <meta name="msapplication-TileColor" content="#fef2d0">
   <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
   <meta content="minimum-scale=1.0, width=device-width, maximum-scale=0.6667, user-scalable=no" name="viewport" />
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  <link rel="stylesheet" type="text/css" href="./libraries/bootstrap.min.css">
+  <script src="./libraries/jquery.min.js"></script>
+  <script src="./libraries/popper.min.js"></script>
+  <script src="./libraries/bootstrap.min.js"></script>
   <script src="./libraries/FileSaver.min.js"></script>
-  <script src="./code/cncvariables2d5_v_1_4.js"></script>
-  <script src="./code/cncstorage2d5_v_1_4.js"></script>
-  <script src="./code/cncsvgparser2d5_v_1_4.js"></script>
-  <script src="./code/cncgcode2d5_v_1_4.js"></script>
-  <script src="./code/gcodercnc2d5_v_1_4.js"></script>
-  <link rel="stylesheet" type="text/css" href="./code/gcodercnc2d5_v_1_4.css">
+  <script src="./code/cncvariables2d5_v_1_5.js"></script>
+  <script src="./code/cncstorage2d5_v_1_5.js"></script>
+  <script src="./code/cncsvgparser2d5_v_1_5.js"></script>
+  <script src="./code/cncgcode2d5_v_1_5.js"></script>
+  <script src="./code/gcodercnc2d5_v_1_5.js"></script>
+  <link rel="stylesheet" type="text/css" href="./code/gcodercnc2d5_v_1_5.css">
 </head>
 <body>
 <div id="outercontainer">
@@ -65,14 +65,14 @@
     </li>
     <!-- Dropdown -->
     <li class="nav-item dropdown">
-      <a class="nav-link dropdown-toggle navbaritems" href="#" id="navbarthemedrop" data-toggle="dropdown">Theme</a>
+      <a class="nav-link dropdown-toggle navbaritems" href="#" id="navbardrop" data-toggle="dropdown">Theme</a>
       <div class="dropdown-menu navbardropdownmenu">
         <div id="themesdropdownitems"></div>
       </div>
     </li>
     <!-- Dropdown -->
     <li class="nav-item dropdown">
-      <a class="nav-link dropdown-toggle navbaritems" href="#" id="navbarexampledrop" data-toggle="dropdown">Examples</a>
+      <a class="nav-link dropdown-toggle navbaritems" href="#" id="navbardrop" data-toggle="dropdown">Examples</a>
       <div class="dropdown-menu navbardropdownmenu">
         <div id="samplesdropdownitems"></div>
       </div>
@@ -160,11 +160,10 @@
         <button type="button" class="close cncmodalcross" data-dismiss="modal">&times;</button>
       </div>
       <div class="modal-body cncmodalbody">
-        <p>To generate a G-Code file to download you just need to provide a few details below about your project.</p>
         <div id="gcodeerror">
           <p class='gcodeerror'>Oh dear, there seems to be a problem with the values you entered. Please check them and try again.</p>
         </div>
-        <div class="row" style="width: 90%; margin: auto;">
+        <div class="row" style="width: 90%; margin: auto; padding-bottom: 20px;">
           <div class="col text-center">
             Width (mm): <input id="ncwidth" type="number" name="quantity" min="0" max="2000" step="0.1">
           </div>
@@ -176,18 +175,40 @@
             </select>
           </div>
         </div>
-        <br />
-        <div class="row" style="width: 90%; margin: auto;">
+        <div class="row" style="width: 90%; margin: auto; padding-bottom: 20px;">
           <div class="col text-center">
             Height (mm): <input id="ncheight" type="number" name="quantity" min="0" max="2000" step="0.1">
           </div>
           <div class="col text-center">
+            Move speed:
+            <select id="movespeed" name="movespeed">
+              <option value="50">50 mm/min</option>
+              <option value="100">100 mm/min</option>
+              <option value="150">150 mm/min</option>
+              <option value="200" selected>200 mm/min</option>
+              <option value="250">250 mm/min</option>
+              <option value="300">300 mm/min</option>
+              <option value="350">350 mm/min</option>
+              <option value="400">400 mm/min</option>
+              <option value="450">450 mm/min</option>
+              <option value="500">500 mm/min</option>
+            </select>
+          </div>
+        </div>
+        <div class="row" style="width: 90%; margin: auto;">
+          <div class="col text-center">
+            Process passes:
+            <select id="passmode" name="passmode">
+              <option value="pathbypath" selected>Path by path</option>
+              <option value="passbypass">Pass by pass</option>
+            </select>
+          </div>
+          <div class="col text-center">
             <div id="safezdiv">
-              Safe Z offset (mm): <input id="safez" type="number" name="quantity" min="0" max="100" step="0.1" value="0">
+              Safe Z (mm): <input id="safez" type="number" name="quantity" min="0" max="100" step="0.1" value="0">
             </div>
           </div>
         </div>
-        <br />
       </div>
       <div class="modal-footer cncmodalfooter">
         <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>

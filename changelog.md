@@ -1,5 +1,19 @@
 # Changelog
 
+## Version 1.5 (***DATE***)
+
+* Added header text and comments to generated GCode.
+* Added moving speed selection to GCode export dialog.
+* Saving to local storage now includes moving speed.
+* Cutting passes can now be processed on a path-by-path or pass-by-pass basis.
+* GCode created in LASER mode now has no Z moves.
+* Fixed problems with empty (no 'd' element) paths, e.g. as found in Boxy SVG files.
+* Added matrix transformations as they are used a lot by Boxy SVG.
+* Improved transformations, and changed them to matrix math, for greater SVG compatibility.
+* SVG transform functions have been moved to the svgparser javascript file for consistency.
+* Where SVG files include rectangle elements with a class of 'BoundingBox' those are now ignored.
+* Added a new example: a simple flower router-design for learning V-carving.
+
 ## Version 1.4 (1 Sep 2019)
 
 * More minor adjustments to facilitate the Chromebook app.
