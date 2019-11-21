@@ -1,6 +1,6 @@
 # Changelog
 
-## Version 1.5 (***DATE***)
+## Version 1.5 (21 Nov 2019)
 
 * Added header text and comments to generated GCode.
 * Added moving speed selection to GCode export dialog.
