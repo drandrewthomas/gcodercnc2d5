@@ -1,12 +1,12 @@
-# GCoderCNC 2.5D
+# GCoderCNC
 
 GCoderCNC has been updaded to version 1.5: [see more details in the changelog](https://github.com/drandrewthomas/gcodercnc2d5/blob/master/changelog.md).
 
-## What is GCoderCNC 2.5D
+## What is GCoderCNC
 
-GCoderCNC 2.5D is a completely free and open source web app for creating G-Code files from SVG graphics, such as the ones you can create using [Inkscape](https://inkscape.org/). Once you load an SVG file you can choose between router and LASER modes to suit your CNC machine and project type. It's hosted on Github too, so you can run it **[just by clicking here](https://drandrewthomas.github.io/gcodercnc2d5)** without having to visit any dodgy websites!
+GCoderCNC is a completely free and open source web app for creating G-Code files from SVG graphics, such as the ones you can create using [Inkscape](https://inkscape.org/). Once you load an SVG file you can choose between router and LASER modes to suit your CNC machine and project type. It's hosted on Github too, so you can run it **[just by clicking here](https://drandrewthomas.github.io/gcodercnc2d5)** without having to visit any dodgy websites!
 
-While it is designed to make creating CNC G-Code as easy as possible, GCoderCNC 2.5D includes many advanced features to ensure you can use it for some very creative projects. For instance, it allows you to do things like setting different depths of cut, or LASER powers, for individual elements. And for routing it even lets you vary the cut depth for simple v-carving!
+While it is designed to make creating CNC G-Code as easy as possible, GCoderCNC includes many advanced features to ensure you can use it for some very creative projects. For instance, it allows you to do things like setting different depths of cut, or LASER powers, for individual elements. And for routing it even lets you vary the cut depth for simple v-carving!
 
 Best of all, this app doesn't upload your designs or data to a server, or use cookies, so you can keep all your work on your own computer. And even better, it's designed for use on all PCs, web-browsers and tablets that support HTML5 apps (although not for phones). Try it out now, in your web-browser, just by clicking on the screenshot below.
 
