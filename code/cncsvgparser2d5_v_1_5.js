@@ -701,7 +701,7 @@ function gettransform(trans) {
         if (tt.length === 2) {
           t1 = parseFloat(tt[0]);
           t2 = parseFloat(tt[1]);
-          if (!isNaN(t1) && t1 !== null && !isNaN(t2) && t2 == null)
+          if (!isNaN(t1) && t1 !== null && !isNaN(t2) && t2 !== null)
             t = [t[0], t[1]];
         }
       }
@@ -719,7 +719,7 @@ function gettransform(trans) {
         if (ts.length === 2) {
           t1 = parseFloat(ts[0]);
           t2 = parseFloat(ts[1]);
-          if (!isNaN(t1) && t1 !== null && !isNaN(t2) && t2 == null)
+          if (!isNaN(t1) && t1 !== null && !isNaN(t2) && t2 !== null)
             s = [t1, t2];
         }
       }
@@ -738,13 +738,13 @@ function gettransform(trans) {
           t1 = parseFloat(tr[0]);
           t2 = parseFloat(tr[1]);
           t3 = parseFloat(tr[2]);
-          if (!isNaN(t1) && t1 !== null && !isNaN(t2) && t2 == null && !isNaN(t3) && t3 == null)
+          if (!isNaN(t1) && t1 !== null && !isNaN(t2) && t2 !== null && !isNaN(t3) && t3 !== null)
             r = [t1, t2, t3];
         }
       }
-      // Order: scale -> rotate -> translate
-      // NOTE: Rotation origins are not yet implemented !!!
-      mat=[s[0]*Math.cos(r[0]*torad),s[1]*Math.sin(r[0]*torad),-s[0]*Math.sin(r[0]*torad),s[1]*Math.cos(r[0]*torad),t[0],t[1]];
+      mat=[s[0] * Math.cos(r[0]*torad), s[1] * Math.sin(r[0]*torad), -s[0] * Math.sin(r[0]*torad), s[1] * Math.cos(r[0]*torad),
+           (-r[1] * Math.cos(r[0]*torad) + r[2] * Math.sin(r[0]*torad) + r[1]) * s[0] + t[0],
+           (-r[1] * Math.sin(r[0]*torad) - r[2] * Math.cos(r[0]*torad) + r[2]) * s[1] + t[1]];
     }
   }
   return mat;
