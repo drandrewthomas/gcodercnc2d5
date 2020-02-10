@@ -1,5 +1,13 @@
 # Changelog
 
+## Version 1.6 (10 Feb 2020)
+
+* Upgraded code to a Progressive Web App.
+* Code files now do not have '2d5' in their filenames.
+* Fixed some bugs with transformations in SVG parsing code.
+* Minor changes to improve Chrome Lighthouse audit test results.
+* Added a new example: a mini CNC shop sign design for LASER etching/cutting.
+
 ## Version 1.5 (21 Nov 2019)
 
 * Added header text and comments to generated GCode.
