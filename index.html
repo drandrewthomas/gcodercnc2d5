@@ -4,10 +4,11 @@
   <title>GCoderCNC 2.5D</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="apple-mobile-web-app-title" content="GCoderCNC 2.5D">
-  <link rel="apple-touch-icon" href="./images/icons/icon-152x152.png">
-  <meta name="msapplication-TileImage" content="./images/icons/icon-144x144.png">
+  <meta name="apple-mobile-web-app-title" content="GCoderCNC">
+  <link rel="apple-touch-icon" href="./images/icons/gcnc_icon_152.png">
+  <meta name="msapplication-TileImage" content="./images/icons/gcnc_icon_144.png">
   <meta name="msapplication-TileColor" content="#fef2d0">
+  <meta name="theme-color" content="#fef2d0"/>
   <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
   <meta content="minimum-scale=1.0, width=device-width, maximum-scale=0.6667, user-scalable=no" name="viewport" />
   <link rel="stylesheet" type="text/css" href="./libraries/bootstrap.min.css">
@@ -15,19 +16,33 @@
   <script src="./libraries/popper.min.js"></script>
   <script src="./libraries/bootstrap.min.js"></script>
   <script src="./libraries/FileSaver.min.js"></script>
-  <script src="./code/cncvariables2d5_v_1_5.js"></script>
-  <script src="./code/cncstorage2d5_v_1_5.js"></script>
-  <script src="./code/cncsvgparser2d5_v_1_5.js"></script>
-  <script src="./code/cncgcode2d5_v_1_5.js"></script>
-  <script src="./code/gcodercnc2d5_v_1_5.js"></script>
-  <link rel="stylesheet" type="text/css" href="./code/gcodercnc2d5_v_1_5.css">
+  <script src="./code/cncvariables_v_1_6.js"></script>
+  <script src="./code/cncstorage_v_1_6.js"></script>
+  <script src="./code/cncsvgparser_v_1_6.js"></script>
+  <script src="./code/cncgcode_v_1_6.js"></script>
+  <script src="./code/gcodercnc_v_1_6.js"></script>
+  <link rel="stylesheet" type="text/css" href="./code/gcodercnc_v_1_6.css">
+  <link rel="manifest" href="manifest.json" />
+  <script>
+    if ('serviceWorker' in navigator)
+    {
+      window.addEventListener('load', () =>
+      {
+        navigator.serviceWorker.register('./gcnc_worker.js')
+          .then((reg) =>
+          {
+            console.log('Service worker registered.', reg);
+          });
+      });
+    }
+  </script>
 </head>
 <body>
 <div id="outercontainer">
 
 <nav id="appnav" class="navbar navbar-expand navbar-expand-sm navbar-light navbar-fixed-top cncnavbar">
   <!-- Brand -->
-  <a class="navbar-brand navbarbrand" href="#"><img src="./images/icons/navbaricon.png" width="32" height="32" class="d-inline-block align-top" /> GCoderCNC</a>
+  <a class="navbar-brand navbarbrand" href="#"><img src="./images/icons/navbaricon.png" width="32" height="32" alt="G-Coder CNC icon" class="d-inline-block align-top" /> GCoderCNC</a>
   <ul class="navbar-nav">
     <!-- Dropdown -->
     <li class="nav-item dropdown">
@@ -83,11 +98,11 @@
     <li class="nav-item dropdown">
       <a class="nav-link dropdown-toggle navbaritems" href="#" id="navbardrop" data-toggle="dropdown">Help</a>
       <div class="dropdown-menu dropdown-menu-right navbardropdownmenu">
-        <a id="projectlink" class="dropdown-item navbardropdownitems" href="" target="_blank">Visit this examples web page</a>
+        <a id="projectlink" class="dropdown-item navbardropdownitems" href="" target="_blank" rel="noreferrer">Visit this examples web page</a>
         <a class="dropdown-item navbardropdownitems" href="#" data-toggle="modal" data-target="#aboutdialog">About...</a>
         <a class="dropdown-item navbardropdownitems" href="#" data-toggle="modal" data-target="#privacydialog">Privacy...</a>
-        <a class="dropdown-item navbardropdownitems" href="https://github.com/drandrewthomas/GCoderCNC_2.5D" target="_blank">Visit the Github page</a>
-        <a class="dropdown-item navbardropdownitems" href="https://www.cncmakerzone.co.uk" target="_blank">Visit CNCMakerZone.co.uk</a>
+        <a class="dropdown-item navbardropdownitems" href="https://github.com/drandrewthomas/GCoderCNC_2.5D" target="_blank" rel="noreferrer">Visit the Github page</a>
+        <a class="dropdown-item navbardropdownitems" href="https://www.cncmakerzone.co.uk" target="_blank" rel="noreferrer">Visit CNCMakerZone.co.uk</a>
       </div>
     </li>
   </ul>
