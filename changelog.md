@@ -7,6 +7,7 @@
 * Fixed some bugs with transformations in SVG parsing code.
 * Minor changes to improve Chrome Lighthouse audit test results.
 * Added a new example: a mini CNC shop sign design for LASER etching/cutting.
+* Updated icons, and index.html header, for Progressive Web App uses.
 
 ## Version 1.5 (21 Nov 2019)
 
