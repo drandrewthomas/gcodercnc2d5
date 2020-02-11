@@ -26,6 +26,7 @@ var filesToCache =
 
 self.addEventListener('install', function(e)
 {
+  self.skipWaiting();
   e.waitUntil(
     caches.open(cacheName).then(function(cache)
     {
