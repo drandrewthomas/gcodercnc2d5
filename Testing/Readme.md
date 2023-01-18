@@ -1,6 +1,6 @@
 # Files for testing GCoderCNC
 
-GCoderCNC is tested prior to each version release using various SVG files including the ones included in the examples menu. However, in order to make testing a little more organised, a number of SVG files have been created for specific testing purposes. Those files are included in this repo folder and are listed below.
+Here you can find various SVG files that have been created for specific GCoderCNC testing purposes:
 
 **Inkscape_100x75_load_test.svg**: This file includes a number of elements, some rotated, for general checking that Inkscape files load correctly. It also includes an image and text element to test that the code detects them on loading (as displayed in the browser's developer console). This file was created using Inkscape version 0.92 on Ubuntu Linux.
 
