@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>GCoderCNC</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="GCoderCNC">
+  <link rel="apple-touch-icon" href="./images/icons/gcnc_icon_152.png">
+  <meta name="msapplication-TileImage" content="./images/icons/gcnc_icon_144.png">
+  <meta name="msapplication-TileColor" content="#fef2d0">
+  <meta name="theme-color" content="#fef2d0"/>
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+  <meta content="minimum-scale=1.0, width=device-width, maximum-scale=0.6667, user-scalable=no" name="viewport" />
+  <link rel="stylesheet" type="text/css" href="./libraries/bootstrap.min.css">
+  <script src="./libraries/jquery.min.js"></script>
+  <script src="./libraries/popper.min.js"></script>
+  <script src="./libraries/bootstrap.min.js"></script>
+  <script src="./libraries/FileSaver.min.js"></script>
+  <script src="./code/cncvariables_v_1_7.js"></script>
+  <script src="./code/cncstorage_v_1_7.js"></script>
+  <script src="./code/cncsvgparser_v_1_7.js"></script>
+  <script src="./code/cncgcode_v_1_7.js"></script>
+  <script src="./code/gcodercnc_v_1_7.js"></script>
+  <link rel="stylesheet" type="text/css" href="./code/gcodercnc_v_1_7.css">
+</head>
+<body>
+<div id="outercontainer">
+
+<nav id="appnav" class="navbar navbar-expand navbar-expand-sm navbar-light navbar-fixed-top cncnavbar">
+  <!-- Brand -->
+  <a class="navbar-brand navbarbrand" href="#"><img src="./images/icons/navbaricon.png" width="32" height="32" alt="G-Coder CNC icon" class="d-inline-block align-top" /> GCoderCNC</a>
+  <ul class="navbar-nav">
+    <!-- Dropdown -->
+    <li class="nav-item dropdown">
+      <a class="nav-link dropdown-toggle navbaritems" href="#" id="navbardrop" data-toggle="dropdown">Import</a>
+      <div class="dropdown-menu navbardropdownmenu">
+        <a id="openimportdialog" class="dropdown-item navbardropdownitems" href="#" data-toggle="modal">Import SVG...</a>
+      </div>
+    </li>
+    <!-- Dropdown -->
+    <li class="nav-item dropdown">
+      <a class="nav-link dropdown-toggle navbaritems" href="#" id="navbardrop" data-toggle="dropdown">Export</a>
+      <div class="dropdown-menu navbardropdownmenu">
+        <a id="opengcodedialog" class="dropdown-item navbardropdownitems" href="#" data-toggle="modal">Export GCode...</a>
+        <a id="opensvgexportdialog" class="dropdown-item navbardropdownitems" href="#" data-toggle="modal">Export SVG file...</a>
+        <a id="openscadexportdialog" class="dropdown-item navbardropdownitems" href="#" data-toggle="modal">Export SCAD file...</a>
+      </div>
+    </li>
+    <!-- Dropdown -->
+    <li class="nav-item dropdown">
+      <a class="nav-link dropdown-toggle navbaritems" href="#" id="navbardrop" data-toggle="dropdown">CNC mode</a>
+      <div class="dropdown-menu navbardropdownmenu">
+        <a id="rmode" class="dropdown-item navbardropdownitems" href="#">✓ Router mode (with depth)</a>
+        <a id="lmode" class="dropdown-item navbardropdownitems" href="#">LASER mode (no depth)</a>
+      </div>
+    </li>
+    <!-- Dropdown -->
+    <li class="nav-item dropdown">
+      <a class="nav-link dropdown-toggle navbaritems" href="#" id="navbardrop" data-toggle="dropdown">XY origin</a>
+      <div class="dropdown-menu navbardropdownmenu">
+        <a id="origin0" class="dropdown-item navbardropdownitems" href="#">✓ Bottom left</a>
+        <a id="origin1" class="dropdown-item navbardropdownitems" href="#">Top left</a>
+        <a id="origin2" class="dropdown-item navbardropdownitems" href="#">Bottom right</a>
+        <a id="origin3" class="dropdown-item navbardropdownitems" href="#">Top right</a>
+        <a id="origin4" class="dropdown-item navbardropdownitems" href="#">Middle</a>
+      </div>
+    </li>
+    <!-- Dropdown -->
+    <li class="nav-item dropdown">
+      <a class="nav-link dropdown-toggle navbaritems" href="#" id="navbardrop" data-toggle="dropdown">Theme</a>
+      <div class="dropdown-menu navbardropdownmenu">
+        <div id="themesdropdownitems"></div>
+      </div>
+    </li>
+    <!-- Dropdown -->
+    <li class="nav-item dropdown">
+      <a class="nav-link dropdown-toggle navbaritems" href="#" id="navbardrop" data-toggle="dropdown">Examples</a>
+      <div class="dropdown-menu navbardropdownmenu">
+        <div id="samplesdropdownitems"></div>
+      </div>
+    </li>
+  </ul>
+  <ul class="navbar-nav ml-auto">
+    <!-- Dropdown -->
+    <li class="nav-item dropdown">
+      <a class="nav-link dropdown-toggle navbaritems" href="#" id="navbardrop" data-toggle="dropdown">Help</a>
+      <div class="dropdown-menu dropdown-menu-right navbardropdownmenu">
+        <a id="projectlink" class="dropdown-item navbardropdownitems" href="" target="_blank" rel="noreferrer">Visit this examples web page</a>
+        <a class="dropdown-item navbardropdownitems" href="#" data-toggle="modal" data-target="#aboutdialog">About...</a>
+        <a class="dropdown-item navbardropdownitems" href="#" data-toggle="modal" data-target="#privacydialog">Privacy...</a>
+        <a class="dropdown-item navbardropdownitems" href="https://github.com/drandrewthomas/GCoderCNC_2.5D" target="_blank" rel="noreferrer">Visit the Github page</a>
+        <a class="dropdown-item navbardropdownitems" href="https://www.parth3d.co.uk" target="_blank" rel="noreferrer">Visit Parth3D.co.uk</a>
+      </div>
+    </li>
+  </ul>
+</nav>
+
+<!-- SVG file import dialog -->
+<div id="importsvgfiledialog" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header cncmodalheader">
+        <h4 class="modal-title">Open an SVG file</h4>
+        <button type="button" class="close cncmodalcross" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body cncmodalbody">
+        <p>Click the 'choose file' button below to import your design, making sure the file is a valid Scalable Vector Graphics (SVG) file.</p>
+        <input id="svgfile" class="form-control-file border svgimportcontrol" name="svgfile" type="file" />
+      </div>
+      <div class="modal-footer cncmodalfooter">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <button id="importbutton" type="button" class="btn btn-danger" data-dismiss="modal">Open file</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Wrong import file dialog -->
+<div id="svgproblemdialog" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header cncmodalheader">
+        <h4 class="modal-title">SVG file import error!</h4>
+        <button type="button" class="close cncmodalcross" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body cncmodalbody">
+        <p>An error occurred trying to open a file. Perhaps you chose one that isn't an SVG file, or you may not even have chosen a file.</p>
+        <p>Please try again and make sure you select a valid SVG file to import.</p>
+      </div>
+      <div class="modal-footer cncmodalfooter">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Text element found dialog -->
+<div id="svgtexteldialog" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header cncmodalheader">
+        <h4 class="modal-title">Warning: text element found!</h4>
+        <button type="button" class="close cncmodalcross" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body cncmodalbody">
+        <p>Your file includes SVG text elements, which won't be rendered as they do not contain any path data.</p>
+        <p>If you want your text included in your CNC project please convert it to paths in your SVG editing software and try again.</p>
+      </div>
+      <div class="modal-footer cncmodalfooter">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- GCode file save dialog -->
+<div id="savegcodefiledialog" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-dialog-centered" style="width: 800px;">
+    <div class="modal-content">
+      <div class="modal-header cncmodalheader">
+        <h4 class="modal-title">Export a G-Code file</h4>
+        <button type="button" class="close cncmodalcross" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body cncmodalbody">
+        <div id="gcodeerror">
+          <p class='gcodeerror'>Oh dear, there seems to be a problem with the values you entered. Please check them and try again.</p>
+        </div>
+        <div class="row" style="width: 90%; margin: auto; padding-bottom: 20px;">
+          <div class="col text-center">
+            Width (mm): <input id="ncwidth" type="number" name="quantity" min="0" max="2000" step="0.1">
+          </div>
+          <div class="col text-center">
+            GRBL version:
+            <select id="grblmode" name="grblmode">
+              <option value="Speed 0 to 1000" selected>Speed 0 to 1000</option>
+              <option value="Speed 0 to 255">Speed 0 to 255</option>
+            </select>
+          </div>
+        </div>
+        <div class="row" style="width: 90%; margin: auto; padding-bottom: 20px;">
+          <div class="col text-center">
+            Height (mm): <input id="ncheight" type="number" name="quantity" min="0" max="2000" step="0.1">
+          </div>
+          <div class="col text-center">
+            Move speed:
+            <select id="movespeed" name="movespeed">
+              <option value="50">50 mm/min</option>
+              <option value="100">100 mm/min</option>
+              <option value="150">150 mm/min</option>
+              <option value="200" selected>200 mm/min</option>
+              <option value="250">250 mm/min</option>
+              <option value="300">300 mm/min</option>
+              <option value="350">350 mm/min</option>
+              <option value="400">400 mm/min</option>
+              <option value="450">450 mm/min</option>
+              <option value="500">500 mm/min</option>
+            </select>
+          </div>
+        </div>
+        <div class="row" style="width: 90%; margin: auto; padding-bottom: 20px;">
+          <div class="col text-center">
+            Process passes:
+            <select id="passmode" name="passmode">
+              <option value="pathbypath" selected>Path by path</option>
+              <option value="passbypass">Pass by pass</option>
+            </select>
+          </div>
+          <div class="col text-center">
+            Chord length:
+            <select id="gcodecurvequality" name="gcodecurvequality">
+              <option value="Very fine (0.1mm)">Very fine (0.1mm)</option>
+              <option value="Fine (0.25mm)">Fine (0.25mm)</option>
+              <option value="Medium (0.5mm)" selected>Medium (0.5mm)</option>
+              <option value="Coarse (1mm)">Coarse (1mm)</option>
+              <option value="Very coarse (2mm)">Very coarse (2mm)</option>
+            </select>
+          </div>
+        </div>
+        <div class="row" style="width: 90%; margin: auto;">
+          <div class="col text-center">
+            <div id="safezdiv">
+              Safe Z (mm): <input id="safez" type="number" name="quantity" min="0" max="100" step="0.1" value="0">
+            </div>
+          </div>
+          <div class="col text-center">
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer cncmodalfooter">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <button id="generategcode" type="button" class="btn btn-danger">Download the G-Code</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SVG file save dialog -->
+<div id="savesvgfiledialog" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-dialog-centered" style="width: 800px;">
+    <div class="modal-content">
+      <div class="modal-header cncmodalheader">
+        <h4 class="modal-title">Export an SVG file</h4>
+        <button type="button" class="close cncmodalcross" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body cncmodalbody">
+        <p>This download will be a simple SVG file with cutting paths as linear elements representing GCode movements. CNC settings will be embedded so you can import the SVG file later to continue where you left off.</p>
+        <div id="svgexporterror">
+          <p class='gcodeerror'>Oh dear, there seems to be a problem with the values you entered. Please check them and try again.</p>
+        </div>
+        <div class="row" style="width: 90%; margin: auto;">
+          <div class="col text-center">
+            Width (mm): <input id="svgncwidth" type="number" name="quantity" min="0" max="2000" step="0.1">
+          </div>
+          <div class="col text-center">
+            Height (mm): <input id="svgncheight" type="number" name="quantity" min="0" max="2000" step="0.1">
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer cncmodalfooter">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <button id="generatesvgexport" type="button" class="btn btn-danger">Download the SVG file</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SCAD file save dialog -->
+<div id="savescadfiledialog" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-dialog-centered" style="width: 800px;">
+    <div class="modal-content">
+      <div class="modal-header cncmodalheader">
+        <h4 class="modal-title">Export an OpenSCAD file</h4>
+        <button type="button" class="close cncmodalcross" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body cncmodalbody">
+        <p>To generate an OpenSCAD file to download you just need to provide a few details below about your project.</p>
+        <div id="scadexporterror">
+          <p class='gcodeerror'>Oh dear, there seems to be a problem with the values you entered. Please check them and try again.</p>
+        </div>
+        <div class="row" style="width: 90%; margin: auto; padding-bottom: 20px;">
+          <div class="col text-center">
+            Width (mm): <input id="scadncwidth" type="number" name="quantity" min="0" max="2000" step="0.1">
+          </div>
+          <div class="col text-center">
+            Height (mm): <input id="scadncheight" type="number" name="quantity" min="0" max="2000" step="0.1">
+          </div>
+        </div>
+        <div class="row" style="width: 90%; margin: auto; padding-bottom: 20px;">
+          <div class="col text-center">
+            Chord length:
+            <select id="scadcurvequality" name="scadcurvequality">
+              <option value="Very fine (0.1mm)">Very fine (0.1mm)</option>
+              <option value="Fine (0.25mm)">Fine (0.25mm)</option>
+              <option value="Medium (0.5mm)" selected>Medium (0.5mm)</option>
+              <option value="Coarse (1mm)">Coarse (1mm)</option>
+              <option value="Very coarse (2mm)">Very coarse (2mm)</option>
+            </select>
+          </div>
+          <div class="col text-center">
+            Vertical position:
+            <select id="scadvertpos" name="scadvertpos">
+              <option value="Centres at zero" selected>Centred</option>
+              <option value="Landed at zero">Landed</option>
+            </select>
+          </div>
+        </div>
+        <div class="row" style="width: 90%; margin: auto;">
+          <div class="col text-center">
+            Include:
+            <select id="scadinclude" name="scadinclude">
+              <option value="Closed paths" selected>Closed paths</option>
+              <option value="All paths">All paths</option>
+            </select>
+          </div>
+          <div class="col text-center">
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer cncmodalfooter">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <button id="generatescadexport" type="button" class="btn btn-danger">Download the SCAD file</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- About dialog -->
+<div id="aboutdialog" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header cncmodalheader">
+        <h4 class="modal-title"><div id="abouttitle"></div></h4>
+        <button type="button" class="close cncmodalcross" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body cncmodalbody">
+        <p>GCoderCNC is a completely free and open source web app for creating G-Code files from SVG graphics, such as the ones you can create using Inkscape. Once you load an SVG file you can choose between router and LASER modes to suit your CNC machine and project type.</p>
+        <p>While it is designed to make creating CNC G-Code as easy as possible, GCoderCNC includes many advanced features to ensure you can use it for some very creative projects. For instance, it allows you to do things like setting different depths of cut, or LASER powers, for individual elements. And for routing it even lets you vary the cut depth for simple v-carving!</p>
+        <p>Best of all, this app doesn't upload your designs or data to a server, or use cookies, so you can keep all your work on your own computer. And even better, it's designed for use on all PCs, web-browsers and tablets that support HTML5 apps (although not for small phone screens).</p>
+          <p>This web app is copyright 2018-2023 Andrew Thomas.</p>
+      </div>
+      <div class="modal-footer cncmodalfooter">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Privacy dialog -->
+<div id="privacydialog" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header cncmodalheader">
+        <h4 class="modal-title">About GCoderCNC privacy</h4>
+        <button type="button" class="close cncmodalcross" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body cncmodalbody">
+        <p>GCoderCNC works entirely in your browser or as a web-app on your home screen or desktop. None of your files are uploaded to a server while you use this software.</p>
+        <p>Also, no private data about you or your files is collected or transmitted by this software and no cookies are used. As all files are only used in the browser they should be as safe as other files stored on your computer.</p>
+        <p>However, please note that, as described in the license file, you use this software at your own risk.</p>
+      </div>
+      <div class="modal-footer cncmodalfooter">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Samples dialog -->
+<div id="samplesdialog" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header cncmodalheader">
+        <h4 class="modal-title"><div id="samplename"></div></h4>
+        <button type="button" class="close cncmodalcross" data-dismiss="modal">&times;</button>
+      </div>
+      <div id="samplesbody" class="modal-body cncmodalbody" style="height: 500px; max-height: 500px !important;">
+        <div id="samplesdescription" class ="samplesdescription lefttext"></div>
+      </div>
+      <div class="modal-footer cncmodalfooter">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <button id="openthissample" type="button" class="btn btn-danger">Open this example</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="appcontainer">
+
+  <canvas id="svgcanvas" width="1" height="1"></canvas>
+  
+  <div id="defaultprefsbox">
+  <ul class="preferencesbox">
+    <li class="preferenceheading">Default settings</li>
+    <div class="prefrow"><li class="preference">
+      Default feed rate (<div id="deffeedval" class="preferencesinlinevalue">100</div> mm/min):
+      &nbsp;
+      <input id="deffeed" type="range" value="100" min="10" max="500" step="10">
+    </li></div>
+    <div class="prefrow"><li class="preference">
+      Default spindle speed (<div id="defspeedval" class="preferencesinlinevalue">100</div>%):
+      &nbsp;
+      <input id="defspeed" type="range" value="100" min="0" max="100" step="5">
+    </li></div>
+    <div id="defdepthbox" class="prefrow"><li class="preference">
+      Default depth (mm):
+      &nbsp;
+      <input id="defdepth" id="" type="number" value="1" min="0.2" max="50" step="0.1">
+    </li></div>
+    <div class="prefrow"><li class="preference">
+      Default passes (nr):
+      &nbsp;
+      <input id="defpasses" type="number" value="1" min="1" max="100" step="1">
+    </li></div>
+    <div id="defprofilebox" class="prefrow"><li class="preference">
+      Default bottom profile:
+      &nbsp;
+      <select id="defprofile">
+        <option selected>Flat all along</option>
+        <option>Straight down-up</option>
+        <option>Straight up-down</option>
+        <option>Sine down-up</option>
+        <option>Sine up-down</option>
+        <option>Straight just down</option>
+        <option>Straight just up</option>
+        <option>Sine just down</option>
+        <option>Sine just up</option>
+        <option>Trapezoid 80% flat</option>
+      </select>
+    </li></div>
+    <div class="prefrow"><li class="preference">
+      Default group:
+      &nbsp;
+      <select id="defgroup">
+        <option selected>First</option>
+        <option>Second</option>
+        <option>Third</option>
+        <option>Fourth</option>
+        <option>Last</option>
+      </select>
+    </li></div>
+  </ul>
+  </div>
+  
+  <div id="editselectionbox">
+  <ul class="preferencesbox">
+    <li class="preferenceheading">Edit selection</li>
+      <div class="prefrow"><li class="preference">
+        <button id="reversebutton" type="button" class="prefbutton">Reverse path</button>
+      </li></div>
+      <div class="prefrow"><li class="preference">
+        <input type="checkbox" id="cutcheck" class="prefcheck" checked>
+        <label for="cutcheck" class="preflabel">Include in cutting list</label>
+      </li></div>
+      <div id="overbox" class="prefrow"><li class="preference">
+        <input type="checkbox" id="overcheck" class="prefcheck">
+        <label for="overcheck" class="preflabel">Override defaults</label>
+      </li></div>
+      <div id="overridesbox">
+        <div class="prefrow"><li class="preference">
+          Override feed rate (<div id="overfeedval" class="preferencesinlinevalue">100</div> mm/min):
+          &nbsp;
+          <input id="overfeed" type="range" value="100" min="10" max="500" step="10">
+        </li></div>
+        <div class="prefrow"><li class="preference">
+          Override spindle speed (<div id="overspeedval" class="preferencesinlinevalue">100</div>%):
+          &nbsp;
+          <input id="overspeed" type="range" value="100" min="0" max="100" step="5">
+        </li></div>
+        <div id="overdepthbox" class="prefrow"><li class="preference">
+          Override depth (mm):
+          &nbsp;
+          <input id="overdepth" id="" type="number" value="1" min="0.2" max="50" step="0.1">
+        </li></div>
+        <div class="prefrow"><li class="preference">
+          Override passes (nr):
+          &nbsp;
+          <input id="overpasses" type="number" value="1" min="1" max="100" step="1">
+        </li></div>
+        <div id="overprofilebox" class="prefrow"><li class="preference">
+          Override bottom profile:
+          &nbsp;
+          <select id="overprofile">
+            <option selected>Flat all along</option>
+            <option>Straight down-up</option>
+            <option>Straight up-down</option>
+            <option>Sine down-up</option>
+            <option>Sine up-down</option>
+            <option>Straight just down</option>
+            <option>Straight just up</option>
+            <option>Sine just down</option>
+            <option>Sine just up</option>
+            <option>Trapezoid 80% flat</option>
+          </select>
+        </li></div>
+        <div class="prefrow"><li class="preference">
+          Override group:
+          &nbsp;
+          <select id="overgroup">
+            <option selected>First</option>
+            <option>Second</option>
+            <option>Third</option>
+            <option>Fourth</option>
+            <option>Last</option>
+          </select>
+        </li></div>
+      </div>
+
+    </div>
+
+</div>
+  
+<div id="preload">
+  <img src="./images/th_cncshopsign.png" width="0" height="0"/>
+  <img src="./images/th_darthvaderhead.png" width="0" height="0"/>
+  <img src="./images/th_dollshousecrate.png" width="0" height="0"/>
+  <img src="./images/th_dragonplaque.png" width="0" height="0"/>
+  <img src="./images/th_flowervcarve.png" width="0" height="0"/>
+  <img src="./images/th_happyface.png" width="0" height="0"/>
+  <img src="./images/th_humptyegg.png" width="0" height="0"/>
+</div>
+
+</body>
+</html>
