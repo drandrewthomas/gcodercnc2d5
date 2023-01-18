@@ -36,4 +36,4 @@ The function drawpatharc includes code for calculating the arc centre from [http
 
 The getQueryVariable function, allowing reading query variables in the page URL, came from [https://css-tricks.com/snippets/javascript/get-url-variables](https://css-tricks.com/snippets/javascript/get-url-variables)
 
-Finally, this web app is copyright 2018-2023 Andrew Thomas who also runs [cncmakerzone.co.uk](https://www.cncmakerzone.co.uk). Please enjoy them both :-)
+Finally, this web app is copyright 2018-2023 Andrew Thomas who also runs [parth3d.co.uk](https://www.parth3d.co.uk). Please enjoy them both :-)
