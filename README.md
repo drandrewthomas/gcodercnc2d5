@@ -1,6 +1,6 @@
 # GCoderCNC
 
-GCoderCNC has been updaded to version 1.6: [see more details in the changelog](https://github.com/drandrewthomas/gcodercnc2d5/blob/master/changelog.md).
+GCoderCNC has been updaded to version 1.7: [see more details in the changelog](https://github.com/drandrewthomas/gcodercnc2d5/blob/master/changelog.md).
 
 ## What is GCoderCNC
 
